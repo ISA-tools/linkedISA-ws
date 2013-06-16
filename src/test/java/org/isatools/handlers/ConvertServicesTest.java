@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 
@@ -102,7 +103,8 @@ public class ConvertServicesTest {
 		ClientResponse resp = service.type(MediaType.MULTIPART_FORM_DATA).post(
 				ClientResponse.class, formData);
 		assertEquals(200, resp.getStatus());
-		String response = resp.getEntity(String.class);
+		FormDataMultiPart respForm = resp.getEntity(FormDataMultiPart.class);
+		String response = respForm.getField("response").getValue();
 		JsonElement json = new JsonParser().parse(response);
 		JsonObject jobject = json.getAsJsonObject();
 		JsonElement jobject2 = jobject.get("ERROR");
@@ -114,7 +116,8 @@ public class ConvertServicesTest {
 		resp = service.type(MediaType.MULTIPART_FORM_DATA).post(
 				ClientResponse.class, formData);
 		assertEquals(200, resp.getStatus());
-		response = resp.getEntity(String.class);
+		respForm = resp.getEntity(FormDataMultiPart.class);
+		response = respForm.getField("response").getValue();
 		json = new JsonParser().parse(response);
 		jobject = json.getAsJsonObject();
 		jobject2 = jobject.get("ERROR");
@@ -126,7 +129,8 @@ public class ConvertServicesTest {
 		resp = service.type(MediaType.MULTIPART_FORM_DATA).post(
 				ClientResponse.class, formData);
 		assertEquals(200, resp.getStatus());
-		response = resp.getEntity(String.class);
+		respForm = resp.getEntity(FormDataMultiPart.class);
+		response = respForm.getField("response").getValue();
 		json = new JsonParser().parse(response);
 		jobject = json.getAsJsonObject();
 		jobject2 = jobject.get("ERROR");
@@ -150,11 +154,15 @@ public class ConvertServicesTest {
 		ClientResponse resp = service.type(MediaType.MULTIPART_FORM_DATA).post(
 				ClientResponse.class, formData);
 		assertEquals(200, resp.getStatus());
-		String response = resp.getEntity(String.class);
+		
+		FormDataMultiPart respForm = resp.getEntity(FormDataMultiPart.class);
+		String response = respForm.getField("response").getValue();
 		JsonElement json = new JsonParser().parse(response);
 		JsonObject jobject = json.getAsJsonObject();
-		JsonObject jobject2 = jobject.get("CONVERT").getAsJsonObject();
+		JsonElement jobject2 = jobject.get("CONVERT");
 		assertTrue(jobject2 != null);
+		FormDataBodyPart owlfile = respForm.getField("owlfile");
+		assertTrue(owlfile != null);
 	}
 
 	@Test
@@ -184,11 +192,14 @@ public class ConvertServicesTest {
 						MediaType.MULTIPART_FORM_DATA).post(
 						ClientResponse.class, formData);
 				assertEquals(200, resp.getStatus());
-				String response = resp.getEntity(String.class);
+				FormDataMultiPart respForm = resp.getEntity(FormDataMultiPart.class);
+				String response = respForm.getField("response").getValue();
 				JsonElement json = new JsonParser().parse(response);
 				JsonObject jobject = json.getAsJsonObject();
 				JsonElement jobject2 = jobject.get("CONVERT");
 				assertTrue(jobject2 != null);
+				FormDataBodyPart owlfile = respForm.getField("owlfile");
+				assertTrue(owlfile != null);
 				flag.value = true;
 			}
 		}.start();
