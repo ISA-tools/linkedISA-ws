@@ -4,3 +4,10 @@
 /target
 /convert
 /bin
+
+# Files created by IntelliJ IDEA #
+##################################
+*.iml
+*.ipr
+*.iws
+.idea/
