@@ -30,12 +30,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-api:3.4.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.core:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.4" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.8" level="project" />
-    <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-client:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs:jersey-multipart:1.8" level="project" />
+    <orderEntry type="library" name="Maven: org.jvnet:mimepull:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.isatools:import_layer:1.6" level="project" />
     <orderEntry type="library" name="Maven: org.isatools:graph2tab:4.1" level="project" />
     <orderEntry type="library" name="Maven: uk.ac.ebi:jutils:1.4" level="project" />
@@ -130,7 +133,6 @@
     <orderEntry type="module" module-name="isa2owl-core" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-reasoner:3.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-impl:3.3" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-api:3.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-modularity:3.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-apibinding:3.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-functional:3.3" level="project" />
@@ -166,5 +168,6 @@
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi:3.2.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.mortbay.jetty:org.mortbay.jetty:5.1.12" level="project" />
   </component>
+  <component name="POM File Configuration" pomFile="" />
 </module>
 

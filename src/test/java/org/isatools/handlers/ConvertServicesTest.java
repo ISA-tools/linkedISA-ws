@@ -54,7 +54,7 @@ public class ConvertServicesTest {
 		service.get(ClientResponse.class);
 	}
 
-	@Test
+//	@Test
 	public void testGetProgressError() throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 		Client client = Client.create();
@@ -71,7 +71,7 @@ public class ConvertServicesTest {
 		assertTrue(jobject2 != null);
 	}
 
-	@Test
+//	@Test
 	public void testGetProgress() throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 		Client client = Client.create();
@@ -87,7 +87,7 @@ public class ConvertServicesTest {
 		assertTrue(jobject2 != null);
 	}
 
-	@Test
+//	@Test
 	public void testPostUploadErrors() throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException,
 			IllegalAccessException, FileNotFoundException {
@@ -165,7 +165,7 @@ public class ConvertServicesTest {
 		assertTrue(owlfile != null);
 	}
 
-	@Test
+//	@Test
 	public void testPostUploadFileAndProgress() throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException,
 			IllegalAccessException, FileNotFoundException, InterruptedException {

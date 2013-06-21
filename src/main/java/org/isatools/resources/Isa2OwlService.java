@@ -157,7 +157,7 @@ public class Isa2OwlService {
 			@FormDataParam("file") InputStream convertedFile,
 			@FormDataParam("file") FormDataContentDisposition fileDetail,
 			@FormDataParam("filesize") long filesize) {
-
+ 
 		final ConvertHandler handler = convertHandlers.get(serviceID);
 		// Check POST
 		if (!isValidParameters(serviceID, convertedFile, fileDetail, handler)
