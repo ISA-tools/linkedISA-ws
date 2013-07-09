@@ -1,6 +1,5 @@
 package org.isatools.graph.model.impl;
 
-import org.isatools.graph.model.impl.Node;
 
 /**
  * Created by the ISATeam.

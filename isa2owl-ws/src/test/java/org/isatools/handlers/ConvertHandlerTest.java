@@ -127,7 +127,6 @@ public class ConvertHandlerTest {
 
 			}
 			handler.destroy();
-			ConvertHandler.cleanUp(path);
 		}
 
 		assertEquals(0, new File(getClass().getResource("/converted/cancel/")

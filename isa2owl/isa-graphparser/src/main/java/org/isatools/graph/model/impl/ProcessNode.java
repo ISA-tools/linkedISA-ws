@@ -1,10 +1,10 @@
 package org.isatools.graph.model.impl;
 
-import org.isatools.graph.model.ISANode;
-import org.isatools.graph.model.ISAProcessNode;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.isatools.graph.model.ISANode;
+import org.isatools.graph.model.ISAProcessNode;
 
 /**
  * Created by the ISA team

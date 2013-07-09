@@ -1,13 +1,13 @@
 package org.isatools.graph.model.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.isatools.graph.model.ISAMaterialAttribute;
 import org.isatools.graph.model.ISAMaterialNode;
 import org.isatools.graph.model.ISANode;
 import org.isatools.isacreator.model.GeneralFieldTypes;
 import org.isatools.syntax.ExtendedISASyntax;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

@@ -1,13 +1,27 @@
 package org.isatools.isa2owl.converter;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.isatools.isa2owl.mapping.ISASyntax2OWLMapping;
-import org.isatools.owl.ReasonerService;
+import org.isatools.owl.reasoner.ReasonerService;
 import org.isatools.util.Pair;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
-import java.util.*;
 
 /**
  * Created by the ISATeam.
@@ -32,8 +46,8 @@ public class ISA2OWL {
 
     public static final String STUDY_DESIGN_SUFFIX = " study design";
     public static final String STUDY_DESIGN_EXECUTION_SUFFIX = " study design execution";
-    public static final String STUDY_TITLE_SUFFIX = " title";
-    public static final String STUDY_DESCRIPTION_SUFFIX = " description";
+    public static final String TITLE_SUFFIX = " title";
+    public static final String DESCRIPTION_SUFFIX = " description";
     public static final String STUDY_PROTOCOL_SUFFIX = " protocol";
     public static final String STUDY_PROTOCOL_NAME_SUFFIX = " protocol name";
     public static final String STUDY_PUBLIC_RELEASE_DATE_SUFFIX = " public release date";
@@ -185,7 +199,9 @@ public class ISA2OWL {
 
         OWLNamedIndividual individual = ISA2OWL.factory.getOWLNamedIndividual( (individualIRI==null)? IRIGenerator.getIRI(ISA2OWL.ontoIRI) : individualIRI);
 
-        OWLAnnotation annotation = ISA2OWL.factory.getOWLAnnotation(ISA2OWL.factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI()), ISA2OWL.factory.getOWLLiteral(individualLabel));
+        OWLAnnotation annotation = ISA2OWL.factory.getOWLAnnotation(
+                ISA2OWL.factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI()),
+                ISA2OWL.factory.getOWLLiteral(individualLabel));
         OWLAnnotationAssertionAxiom annotationAssertionAxiom = ISA2OWL.factory.getOWLAnnotationAssertionAxiom(individual.getIRI(), annotation);
         ISA2OWL.manager.addAxiom(ISA2OWL.ontology, annotationAssertionAxiom);
 

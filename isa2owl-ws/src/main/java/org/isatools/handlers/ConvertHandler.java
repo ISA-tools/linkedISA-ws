@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.FileDeleteStrategy;
 import org.bbop.commandline.FailException;
 import org.isatools.beans.Bean.ResponseTypes;
 import org.isatools.beans.ConvertBean;
@@ -136,17 +135,15 @@ public class ConvertHandler {
         ISASyntax2OWLMapping mapping = parser.getMapping();
         ISAtab2OWLConverter isatab2owl = new ISAtab2OWLConverter(configDir, mapping);
         String iri = "http://isa-tools.org/isa/isa.owl"+ontologyCounter.incrementAndGet();
-        progressSlowlyUpTo(90,currentStage);
+        progressSlowlyUpTo(99,currentStage);
         try{
         isatab2owl.convert(path, iri);
         }catch (NullPointerException e){
             throw new FailException("Convertion to RDF failed");
         }
-        currentStage.setProgress(90);
         String savePath = isaTabFile.getParent() +"/"+ isaTabFile.getName().substring(0,isaTabFile.getName().lastIndexOf(".")) + ".owl";
         isatab2owl.saveOntology(savePath);
         File owl=new File(savePath);
-        currentStage.setProgress(95);
         return owl;
 	}
 
@@ -269,36 +266,36 @@ public class ConvertHandler {
 	public void setState(Enum<STATE> state) {
 		this.state = state;
 	}
-	
-	public synchronized static void cleanUp(final String path) {
-		File f = null;
-		if (path != null) {
-			f = new File(path);
-			if (f.exists())
-				try {
-					FileDeleteStrategy.FORCE.delete(f);
-				} catch (IOException e) {
-					e.printStackTrace();
-					if (runningDeletions.contains(Thread.currentThread()))
-						runningDeletions.remove(Thread.currentThread());
-					else {
-						// Try again in a minute
-						Thread t = new Thread() {
-							public void run() {
-								try {
-									sleep(30000);
-									ConvertHandler.cleanUp(path);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-						};
-						runningDeletions.add(t);
-						t.start();
-					}
-				}
-		}
-	}
+//	
+//	public synchronized static void cleanUp(final String path) {
+//		File f = null;
+//		if (path != null) {
+//			f = new File(path);
+//			if (f.exists())
+//				try {
+//					FileDeleteStrategy.FORCE.delete(f);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//					if (runningDeletions.contains(Thread.currentThread()))
+//						runningDeletions.remove(Thread.currentThread());
+//					else {
+//						// Try again in a minute
+//						Thread t = new Thread() {
+//							public void run() {
+//								try {
+//									sleep(30000);
+//									ConvertHandler.cleanUp(path);
+//								} catch (InterruptedException e) {
+//									e.printStackTrace();
+//								}
+//							}
+//						};
+//						runningDeletions.add(t);
+//						t.start();
+//					}
+//				}
+//		}
+//	}
 
 	
 	public File getOwlFile() {

@@ -1,5 +1,7 @@
 package org.isatools.graph.parser;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.isatools.isacreator.io.importisa.ISAtabFilesImporter;
 import org.isatools.isacreator.model.Assay;
@@ -7,8 +9,6 @@ import org.isatools.isacreator.model.Investigation;
 import org.isatools.isacreator.model.Study;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Map;
 
 //import org.junit.Before;
 //import org.junit.Test;

@@ -36,6 +36,7 @@ public class Isa2OwlService {
 	static {
 		// ISAConfigurationSet
 		// .setConfigPath("C:/bin/apache-tomcat-6.0.37/bin/config/default-config");
+		DaemonCleaner.INSTANCE.start();
 		convertHandlers = new HashMap<String, ConvertHandler>();
 	}
 
@@ -129,16 +130,14 @@ public class Isa2OwlService {
 					.toJSONString();
 
 		String messages = "File convert cancelled";
-		String path = null;
 		if (handler != null)
 			try {
-				path = handler.getDeletePath();
 				handler.cancel();
+				DaemonCleaner.addPath(handler.getDeletePath());
 				handler.destroy();
 			} catch (IOException e) {
 				messages = "Cancelling Failed, file could not be cancelled";
 			}
-		ConvertHandler.cleanUp(path);
 		convertHandlers.remove(serviceID);
 		log.info(serviceID + " cancelled convert");
 		return new MessagesBean(ResponseTypes.INFO, 1, messages).toJSONString();
@@ -195,9 +194,8 @@ public class Isa2OwlService {
 			public void run() {
 				try {
 					sleep(60000);
-					String path = handler.getDeletePath();
+					DaemonCleaner.addPath(handler.getDeletePath());
 					handler.destroy();
-					ConvertHandler.cleanUp(path);
 					convertHandlers.remove(handler.getServiceID());
 				} catch (InterruptedException e) {
 					e.printStackTrace();

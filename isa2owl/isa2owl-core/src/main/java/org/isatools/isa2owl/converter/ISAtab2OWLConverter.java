@@ -1,28 +1,47 @@
 package org.isatools.isa2owl.converter;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
-
-import org.isatools.isacreator.model.*;
-
 import org.isatools.graph.model.impl.MaterialNode;
-
 import org.isatools.isa2owl.mapping.ISASyntax2OWLMapping;
 import org.isatools.isacreator.io.importisa.ISAtabFilesImporter;
 import org.isatools.isacreator.io.importisa.ISAtabImporter;
+import org.isatools.isacreator.model.Assay;
+import org.isatools.isacreator.model.Contact;
+import org.isatools.isacreator.model.Factor;
+import org.isatools.isacreator.model.GeneralFieldTypes;
+import org.isatools.isacreator.model.Investigation;
+import org.isatools.isacreator.model.Protocol;
+import org.isatools.isacreator.model.Publication;
+import org.isatools.isacreator.model.Study;
+import org.isatools.isacreator.model.StudyContact;
+import org.isatools.isacreator.model.StudyDesign;
+import org.isatools.isacreator.model.StudyPublication;
 import org.isatools.isacreator.ontologymanager.OntologyManager;
 import org.isatools.isacreator.ontologymanager.OntologySourceRefObject;
-
+import org.isatools.owl.ExtendedOBIVocabulary;
 import org.isatools.owl.OWLUtil;
-import org.isatools.owl.ReasonerService;
 import org.isatools.syntax.ExtendedISASyntax;
 import org.isatools.util.Pair;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.*;
 
 /**
  * It converts an ISAtab dataset into RDF based on a given ISA2OWL mapping
@@ -78,7 +97,6 @@ public class ISAtab2OWLConverter {
             ISA2OWL.manager.addIRIMapper(new SimpleIRIMapper(IRI.create(ISAtab2OWLConverter.OBI_IRI), IRI.create(getClass().getClassLoader().getResource("owl/extended-obi.owl"))));
 
             ISA2OWL.ontology = ISA2OWL.manager.createOntology(ISA2OWL.ontoIRI);
-            ISA2OWL.reasonerService = new ReasonerService(ISA2OWL.ontology);
 
             //only import extended-obi.owl
             OWLImportsDeclaration importDecl = ISA2OWL.factory.getOWLImportsDeclaration(IRI.create("http://purl.obolibrary.org/obo/extended-obi.owl"));
@@ -94,6 +112,12 @@ public class ISAtab2OWLConverter {
             System.out.println(importer.getMessagesAsString());
         }
 
+        //initialise the map of individuals
+        ISA2OWL.typeIndividualMap = new HashMap<String, Set<OWLNamedIndividual>>();
+        publicationIndividualMap = new HashMap<Publication, OWLNamedIndividual>();
+        contactIndividualMap = new HashMap<Contact, OWLNamedIndividual>();
+        protocolIndividualMap = new HashMap<String, OWLNamedIndividual>();
+
         Investigation investigation = importer.getInvestigation();
         //processSourceOntologies();
 
@@ -106,11 +130,6 @@ public class ISAtab2OWLConverter {
 
         log.debug("number of studies=" + studies.keySet().size());
 
-        //initialise the map of individuals
-        ISA2OWL.typeIndividualMap = new HashMap<String, Set<OWLNamedIndividual>>();
-        publicationIndividualMap = new HashMap<Publication, OWLNamedIndividual>();
-        contactIndividualMap = new HashMap<Contact, OWLNamedIndividual>();
-        protocolIndividualMap = new HashMap<String, OWLNamedIndividual>();
 
         //convert each study
         for(String key: studies.keySet()){
@@ -184,11 +203,42 @@ public class ISAtab2OWLConverter {
 
     private void convertInvestigation(Investigation investigation){
 
+        //Investigation
+        OWLNamedIndividual investigationIndividual = ISA2OWL.createIndividual(ExtendedISASyntax.INVESTIGATION, investigation.getInvestigationId());
+
+        //Investigation identifier
+        ISA2OWL.createIndividual(Investigation.INVESTIGATION_ID_KEY,  investigation.getInvestigationId());
+
+        //Investigation title
+        OWLNamedIndividual invTitleIndividual = ISA2OWL.createIndividual(Investigation.INVESTIGATION_TITLE_KEY, investigation.getInvestigationId()+ISA2OWL.TITLE_SUFFIX, investigation.getInvestigationTitle());
+        if (invTitleIndividual!=null){
+            OWLDataProperty hasMeasurementValue = ISA2OWL.factory.getOWLDataProperty(ExtendedOBIVocabulary.HAS_VALUE.iri);
+            OWLLiteral titleLiteral = ISA2OWL.factory.getOWLLiteral(investigation.getInvestigationTitle(), OWL2Datatype.XSD_STRING);
+            OWLDataPropertyAssertionAxiom dataPropertyAssertionAxiom = ISA2OWL.factory.getOWLDataPropertyAssertionAxiom(hasMeasurementValue, invTitleIndividual, titleLiteral);
+            ISA2OWL.manager.addAxiom(ISA2OWL.ontology, dataPropertyAssertionAxiom);
+        }
+
+        //Study description
+        OWLNamedIndividual investigationDescriptionIndividual = ISA2OWL.createIndividual(Investigation.INVESTIGATION_DESCRIPTION_KEY, investigation.getInvestigationId()+ISA2OWL.DESCRIPTION_SUFFIX, investigation.getInvestigationDescription());
+        if (investigationDescriptionIndividual!=null){
+            OWLDataProperty hasMeasurementValue = ISA2OWL.factory.getOWLDataProperty(ExtendedOBIVocabulary.HAS_VALUE.iri);
+            OWLLiteral descriptionLiteral = ISA2OWL.factory.getOWLLiteral(investigation.getInvestigationDescription(), OWL2Datatype.XSD_STRING);
+            OWLDataPropertyAssertionAxiom dataPropertyAssertionAxiom = ISA2OWL.factory.getOWLDataPropertyAssertionAxiom(hasMeasurementValue, investigationDescriptionIndividual, descriptionLiteral);
+            ISA2OWL.manager.addAxiom(ISA2OWL.ontology, dataPropertyAssertionAxiom);
+        }
+
+
         ISA2OWL.createIndividual(Investigation.INVESTIGATION_SUBMISSION_DATE_KEY, investigation.getSubmissionDate());
 
-        ISA2OWL.createIndividual(Investigation.INVESTIGATION_PUBLIC_RELEASE_KEY, investigation.getPublicReleaseDate());
+        OWLNamedIndividual publicReleaseDateIndividual = ISA2OWL.createIndividual(Investigation.INVESTIGATION_PUBLIC_RELEASE_KEY, investigation.getInvestigationId()+ISA2OWL.STUDY_PUBLIC_RELEASE_DATE_SUFFIX);
 
-        //TODO add the rest of the elements for the investigation
+        if (publicReleaseDateIndividual!=null){
+            OWLDataProperty hasMeasurementValue = ISA2OWL.factory.getOWLDataProperty(ExtendedOBIVocabulary.HAS_VALUE.iri);
+            OWLLiteral publicReleaseDateLiteral = ISA2OWL.factory.getOWLLiteral(investigation.getPublicReleaseDate(), OWL2Datatype.XSD_STRING);
+            OWLDataPropertyAssertionAxiom dataPropertyAssertionAxiom = ISA2OWL.factory.getOWLDataPropertyAssertionAxiom(hasMeasurementValue, publicReleaseDateIndividual, publicReleaseDateLiteral);
+            ISA2OWL.manager.addAxiom(ISA2OWL.ontology, dataPropertyAssertionAxiom);
+        }
+
 
     }
 
@@ -207,7 +257,7 @@ public class ISAtab2OWLConverter {
         ISA2OWL.createIndividual(Study.STUDY_ID, study.getStudyId());
 
         //Study title
-        OWLNamedIndividual studyTitleIndividual = ISA2OWL.createIndividual(Study.STUDY_TITLE, study.getStudyId()+ISA2OWL.STUDY_TITLE_SUFFIX, study.getStudyTitle());
+        OWLNamedIndividual studyTitleIndividual = ISA2OWL.createIndividual(Study.STUDY_TITLE, study.getStudyId()+ISA2OWL.TITLE_SUFFIX, study.getStudyTitle());
         if (studyTitleIndividual!=null){
             OWLDataProperty hasMeasurementValue = ISA2OWL.factory.getOWLDataProperty(ExtendedOBIVocabulary.HAS_VALUE.iri);
             OWLLiteral titleLiteral = ISA2OWL.factory.getOWLLiteral(study.getStudyTitle(), OWL2Datatype.XSD_STRING);
@@ -216,7 +266,7 @@ public class ISAtab2OWLConverter {
         }
 
         //Study description
-        OWLNamedIndividual studyDescriptionIndividual = ISA2OWL.createIndividual(Study.STUDY_DESC, study.getStudyId()+ISA2OWL.STUDY_DESCRIPTION_SUFFIX, study.getStudyDesc());
+        OWLNamedIndividual studyDescriptionIndividual = ISA2OWL.createIndividual(Study.STUDY_DESC, study.getStudyId()+ISA2OWL.DESCRIPTION_SUFFIX, study.getStudyDesc());
         if (studyDescriptionIndividual!=null){
             OWLDataProperty hasMeasurementValue = ISA2OWL.factory.getOWLDataProperty(ExtendedOBIVocabulary.HAS_VALUE.iri);
             OWLLiteral descriptionLiteral = ISA2OWL.factory.getOWLLiteral(study.getStudyDesc(), OWL2Datatype.XSD_STRING);

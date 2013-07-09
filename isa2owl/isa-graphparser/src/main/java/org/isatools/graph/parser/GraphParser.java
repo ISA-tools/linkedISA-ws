@@ -1,10 +1,25 @@
 package org.isatools.graph.parser;
 
 
-import org.isatools.graph.model.ISANode;
-import org.isatools.graph.model.impl.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import org.isatools.graph.model.ISANode;
+import org.isatools.graph.model.impl.AssayNode;
+import org.isatools.graph.model.impl.CommentNode;
+import org.isatools.graph.model.impl.DataNode;
+import org.isatools.graph.model.impl.Graph;
+import org.isatools.graph.model.impl.MaterialAttribute;
+import org.isatools.graph.model.impl.MaterialNode;
+import org.isatools.graph.model.impl.Node;
+import org.isatools.graph.model.impl.NodeType;
+import org.isatools.graph.model.impl.NodeWithComments;
+import org.isatools.graph.model.impl.ProcessNode;
+import org.isatools.graph.model.impl.ProcessParameter;
 
 
 /**

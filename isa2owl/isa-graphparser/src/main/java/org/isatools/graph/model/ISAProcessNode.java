@@ -1,9 +1,9 @@
 package org.isatools.graph.model;
 
 
-import org.isatools.graph.model.impl.ProcessParameter;
-
 import java.util.List;
+
+import org.isatools.graph.model.impl.ProcessParameter;
 
 /**
  * Created by the ISATeam.
