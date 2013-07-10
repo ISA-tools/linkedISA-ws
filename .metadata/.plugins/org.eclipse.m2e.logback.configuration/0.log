@@ -1164,3 +1164,7 @@
 2013-07-10 06:43:56,537 [Worker-154] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dmaven.test.skip=true -s C:\Users\Pavlos\.m2\settings.xml deploy
 2013-07-10 06:44:04,517 [Worker-160] INFO  o.e.m.i.launch.MavenLaunchDelegate - C:\Users\Pavlos\Dropbox\Masters\Project\Workspace\Bitbucket\biigraph
 2013-07-10 06:44:04,517 [Worker-160] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dmaven.test.skip=true -s C:\Users\Pavlos\.m2\settings.xml clean install
+2013-07-10 06:45:00,747 [Worker-156] INFO  o.e.m.i.launch.MavenLaunchDelegate - C:\Users\Pavlos\Dropbox\Masters\Project\Workspace\Bitbucket\bii-ws
+2013-07-10 06:45:00,747 [Worker-156] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -s C:\Users\Pavlos\.m2\settings.xml jetty:run
+2013-07-10 06:45:53,643 [Worker-159] INFO  o.e.m.i.launch.MavenLaunchDelegate - C:\Users\Pavlos\Dropbox\Masters\Project\Workspace\Bitbucket\isa2owl-ws
+2013-07-10 06:45:53,644 [Worker-159] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -s C:\Users\Pavlos\.m2\settings.xml jetty:run
