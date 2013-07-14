@@ -266,37 +266,6 @@ public class ConvertHandler {
 	public void setState(Enum<STATE> state) {
 		this.state = state;
 	}
-//	
-//	public synchronized static void cleanUp(final String path) {
-//		File f = null;
-//		if (path != null) {
-//			f = new File(path);
-//			if (f.exists())
-//				try {
-//					FileDeleteStrategy.FORCE.delete(f);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//					if (runningDeletions.contains(Thread.currentThread()))
-//						runningDeletions.remove(Thread.currentThread());
-//					else {
-//						// Try again in a minute
-//						Thread t = new Thread() {
-//							public void run() {
-//								try {
-//									sleep(30000);
-//									ConvertHandler.cleanUp(path);
-//								} catch (InterruptedException e) {
-//									e.printStackTrace();
-//								}
-//							}
-//						};
-//						runningDeletions.add(t);
-//						t.start();
-//					}
-//				}
-//		}
-//	}
-
 	
 	public File getOwlFile() {
 		return owlFile;
