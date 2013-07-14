@@ -1,0 +1,1 @@
+sudo scp -r target/*.war pavlos@bii.oerc.ox.ac.uk:/usr/share/jetty/webapps
