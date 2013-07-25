@@ -9,8 +9,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 import org.bbop.commandline.FailException;
 import org.isatools.beans.Bean.ResponseTypes;
 import org.isatools.beans.ConvertBean;

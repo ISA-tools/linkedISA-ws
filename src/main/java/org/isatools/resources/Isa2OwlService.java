@@ -3,7 +3,6 @@ package org.isatools.resources;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.log4j.Logger;
 import org.isatools.beans.Bean.ResponseTypes;
 import org.isatools.beans.InitBean;
 import org.isatools.beans.MessagesBean;
@@ -89,9 +89,9 @@ public class Isa2OwlService {
 		String progressStr = handler.bean().toJSONString();
 		log.info(serviceID + " received progress " + progressStr);
 		// All done destroy handler and remove it from map
-		if (handler.bean().getCurrentStage() == "error"
-				|| handler.bean().getCurrentStage() == "complete"
-				|| handler.bean().getCurrentStage() == "cancelled") {
+		if (handler.bean().getCurrentStage().equals("error")
+				|| handler.bean().getCurrentStage().equals("complete")
+				|| handler.bean().getCurrentStage().equals("cancelled")) {
 			convertHandlers.remove(serviceID);
 		}
 		return progressStr;
