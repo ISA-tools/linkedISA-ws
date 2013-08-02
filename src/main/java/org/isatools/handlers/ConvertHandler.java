@@ -8,7 +8,9 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.log4j.Logger;
 import org.bbop.commandline.FailException;
 import org.isatools.beans.Bean.ResponseTypes;
@@ -150,10 +152,11 @@ public class ConvertHandler {
 		new Thread(){
 			public void run(){
 				int cnt=0;
+				Random r = new Random();
 				while(cnt<limit && currentStage.getProgress()<limit && currentStage.getError()==null){
 					currentStage.setProgress(currentStage.getProgress()+1);
 					try {
-						sleep(500);
+						sleep(500+r.nextInt(500));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
