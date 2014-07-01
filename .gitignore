@@ -1,9 +1,11 @@
 .settings
 .classpath
 .project
-/target
-/convert
-/bin
+target/
+convert
+bin
+log/
+.war
 
 # Files created by IntelliJ IDEA #
 ##################################
